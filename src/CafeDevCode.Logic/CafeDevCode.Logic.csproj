@@ -6,4 +6,17 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="11.0.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+    <PackageReference Include="MediatR" Version="10.0.1" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CafeDevCode.Common.Shared\CafeDevCode.Common.Shared.csproj" />
+    <ProjectReference Include="..\CafeDevCode.Logic.Shared\CafeDevCode.Logic.Shared.csproj" />
+    <ProjectReference Include="..\CafeDevCode.Utils\CafeDevCode.Utils.csproj" />
+  </ItemGroup>
+
 </Project>

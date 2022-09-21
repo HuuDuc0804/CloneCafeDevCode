@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CafeDevCode.Database\CafeDevCode.Database.csproj" />
+  </ItemGroup>
+
 </Project>

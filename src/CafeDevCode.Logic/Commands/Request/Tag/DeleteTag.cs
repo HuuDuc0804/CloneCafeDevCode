@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace CafeDevCode.Logic.Commands.Request
 {
-    public class DeleteTag
+    public class DeleteTag : IIdentifiedCommand,
+        IRequest<BaseCommandResult>
     {
+        public int Id { get; set; }
+        public string? RequestId { get; set; }
+        public string? IpAddress { get; set; }
+        public string? UserName { get; set; }
     }
 }

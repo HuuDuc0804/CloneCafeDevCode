@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CafeDevCode.Logic.Events.Handler
 {
-    internal class Handler
+    public class Handler
     {
     }
 }

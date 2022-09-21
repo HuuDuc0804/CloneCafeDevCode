@@ -33,5 +33,6 @@ namespace CafeDevCode.Database
         public virtual DbSet<SitePage> SitePages => Set<SitePage>();
         public virtual DbSet<Tag> Tags => Set<Tag>();
         public virtual DbSet<Video> Videos => Set<Video>();
+        public virtual DbSet<VideoTag> VideoTags => Set<VideoTag>();
     }
 }

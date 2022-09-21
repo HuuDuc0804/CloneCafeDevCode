@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace CafeDevCode.Logic.Commands.Request
 {
-    public class UpdateUser
+    public class UpdateUser : User,
+        IIdentifiedCommand,
+        IRequest<BaseCommandResultWithData<User>>
     {
+        public string? RequestId { get; set; }
+        public string? IpAddress { get; set; }
+        public string? UpdateUserName { get; set; }
     }
 }
