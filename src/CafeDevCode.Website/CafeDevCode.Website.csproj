@@ -10,7 +10,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="12.0.0" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
+    <PackageReference Include="MediatR" Version="11.0.0" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.9" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CafeDevCode.Database\CafeDevCode.Database.csproj" />
+    <ProjectReference Include="..\CafeDevCode.Logic\CafeDevCode.Logic.csproj" />
+    <ProjectReference Include="..\CafeDevCode.Utils\CafeDevCode.Utils.csproj" />
   </ItemGroup>
 
 </Project>

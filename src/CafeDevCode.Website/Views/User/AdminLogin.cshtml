@@ -1,0 +1,49 @@
+﻿@{
+    ViewData["Title"] = "Đăng nhập hệ thống";
+    Layout = "~/Views/Shared/_AdminAuthenticateLayout.cshtml";
+}
+@model LoginViewModel
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-5">
+            <div class="card shadow-lg border-0 rounded-lg mt-5">
+                <div class="card-header"><h3 class="text-center font-weight-light my-4">Đăng nhập</h3></div>
+                <div class="card-body">
+                    @{
+                        if (!string.IsNullOrEmpty(Model.ErrorMessage))
+                        {
+                            var messages = Model.ErrorMessage.Split("\r\n");
+                            <ul>
+                                @foreach (var message in messages)
+                                {
+                                    if (!string.IsNullOrEmpty(message))
+                                    {
+                                        <li class="text-danger">@message</li>
+                                    }
+                                }
+                            </ul>
+                        }
+                    }
+                    <form asp-action="AdminLoginSubmit" method="post">
+                        <div class="form-floating mb-3">
+                            <input class="form-control" asp-for="UserName" placeholder="Tên đăng nhập" />
+                            <label for="inputEmail">Tên đăng nhập</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input class="form-control" asp-for="Password" type="password" placeholder="Mật khẩu" />
+                            <label for="inputPassword">Mật khẩu</label>
+                        </div>
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" asp-for="RememberPassword" type="checkbox" />
+                            <label class="form-check-label" for="inputRememberPassword">Lưu mật khẩu</label>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
+                            <a class="small" href="password.html">Quên mật khẩu?</a>
+                            <button type="submit" class="btn btn-primary">Đăng nhập</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

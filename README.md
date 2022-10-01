@@ -1,4 +1,4 @@
-# ASP .NET Core 6.0
+# Using ASP .NET Core 6.0 & SQL Server
 ## Install
 ### Database
 - Microsoft.EntityFramworkCore
@@ -9,12 +9,20 @@
 - Microsoft.AspNetCore.Identity.Stores
 - Microsoft.AspNetCore.Identity.EntityFrameworkCore
 
-### Business
+### Business - Logic
 - AutoMapper
 - AutoMapper.Extensions.Microsoft.DependencyInjection
 - MediatR
 - MediatR.Extensions.Microsoft.DependencyInjection
 
+### Common - Utils
+- Microsoft.Extensions.DependencyInjection.Abstractions
+- Microsoft.EntityFramworkCore
+- Microsoft.EntityFramworkCore.SqlServer
+- Microsoft.AspNetCore.Authentication.Cookies
+- Microsoft.AspNetCore.Authentication.Facebook
+- Microsoft.AspNetCore.Authentication.Google
+- Microsoft.AspNetCore.Identity.EntityFrameworkCore
 ## Structure
 - src
 	- application
@@ -32,6 +40,7 @@
                 - Interface
             - MappingProfile
 		- Logic.Shared
+            - Interface
             - Models
 	- common
 		- Common.Shared
