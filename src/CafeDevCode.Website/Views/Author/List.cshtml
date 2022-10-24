@@ -1,0 +1,16 @@
+﻿@using CafeDevCode.Logic.Shared.Models
+
+@model IEnumerable<AuthorSummaryModel>
+@if (Model != null && Model.Any())
+{
+    foreach (var author in Model)
+    {
+        <tr>
+            <td>@author.Id</td>
+            <td>@author.FullName</td>
+            <td>@author.Email</td>
+            <td>@author.Phone</td>
+            <td>@author.ShortName</td>
+        </tr>
+    }
+}

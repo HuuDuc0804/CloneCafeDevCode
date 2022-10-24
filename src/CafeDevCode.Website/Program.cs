@@ -1,6 +1,7 @@
 using CafeDevCode.Database;
 using CafeDevCode.Database.Entities;
 using CafeDevCode.Database.Seeders;
+using CafeDevCode.Logic;
 using CafeDevCode.Logic.Commands.Request;
 using CafeDevCode.Logic.MappingProfile;
 using CafeDevCode.Utils.Extensions;
@@ -30,6 +31,8 @@ namespace CafeDevCode.Website
             // Add AutoMapper & MediatR
             builder.Services.AddMediatR(typeof(Login).Assembly);
             builder.Services.AddAutoMapper(typeof(AuthorMappingProfile).Assembly);
+            //Add Queries
+            builder.Services.AddQueries();
 
             var app = builder.Build();
 
@@ -59,7 +62,7 @@ namespace CafeDevCode.Website
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Site}/{action=Index}/{id?}");
 
             app.Run();
         }

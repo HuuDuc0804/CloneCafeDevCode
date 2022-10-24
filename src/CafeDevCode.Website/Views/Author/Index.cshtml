@@ -1,0 +1,52 @@
+﻿@{
+    ViewData["Title"] = "Admin - Quản lý tác giả - Cafe Dev Code";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Quản lý tác giả</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a asp-action="Index">Tác giả</a></li>
+        <li class="breadcrumb-item active">Danh sách</li>
+    </ol>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <i class="fas fa-table me-1"></i>
+            Danh sách tác giả
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-2">
+                    <a class="w-100 btn btn-success" asp-action="Detail" asp-controller="Author" asp-route-id="0"><i class="fa-solid fa-plus"></i> Thêm</a>
+                    
+                </div>
+            </div>
+            <hr class="my-2" />
+            <table id="author-list" class="datatable-js">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Họ tên</th>
+                        <th>Email</th>
+                        <th>Điện thoại</th>
+                        <th>Tên khác</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>#</th>
+                        <th>Họ tên</th>
+                        <th>Email</th>
+                        <th>Điện thoại</th>
+                        <th>Tên khác</th>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
