@@ -1,0 +1,14 @@
+﻿@using CafeDevCode.Logic.Shared.Models
+
+@{
+    if (string.IsNullOrEmpty(Model.UserName))
+    {
+        ViewData["Title"] = $"Admin - {Model.UserName} - Cafe Dev Code";
+    }
+    else
+    {
+        ViewData["Title"] = $"Admin - Quản lý người dùng - Cafe Dev Code";
+    }
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@model UserDetailModel

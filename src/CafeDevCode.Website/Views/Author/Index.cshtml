@@ -17,9 +17,11 @@
         </div>
         <div class="card-body">
             <div class="row">
+                @*<div class="col-md-2">
+                    <a class="w-100 btn btn-success" onclick="onLoad()"><i class="fa-solid fa-arrows-rotate"></i> Tải</a>
+                </div>*@
                 <div class="col-md-2">
                     <a class="w-100 btn btn-success" asp-action="Detail" asp-controller="Author" asp-route-id="0"><i class="fa-solid fa-plus"></i> Thêm</a>
-                    
                 </div>
             </div>
             <hr class="my-2" />
@@ -31,8 +33,11 @@
                         <th>Email</th>
                         <th>Điện thoại</th>
                         <th>Tên khác</th>
+                        <th>Thao tác</th>
                     </tr>
                 </thead>
+                <tbody id="author-list-body">
+                </tbody>
                 <tfoot>
                     <tr>
                         <th>#</th>
@@ -40,13 +45,65 @@
                         <th>Email</th>
                         <th>Điện thoại</th>
                         <th>Tên khác</th>
+                        <th>Thao tác</th>
                     </tr>
                 </tfoot>
                 <tbody>
-                    
-
                 </tbody>
             </table>
         </div>
     </div>
 </div>
+<script>
+    $(window).on("load", function () {
+        onLoad();
+    })
+    onLoad = () => {
+        $.ajax({
+            type: 'GET',
+            url: '@Url.Action("List")',
+            success: (res) => {
+                $('#author-list-body').empty();
+                $('#author-list-body').html(res);
+            }
+        })
+    }
+
+    onDelete = (id) => {
+        swal({
+            title: 'Xác nhận',
+            text: 'Bạn có chắc chắn muốn xóa?',
+            icon: 'warning',
+            buttons: true,
+            dangerMode: true,
+        }).then((willDelete) => {
+            if (willDelete) {
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("Delete")',
+                    data: {
+                        id: id,
+                    },
+                    success: (res) => {
+                        if (res.success === true) {
+
+                            swal({
+                                title: 'Thành công!',
+                                text: res.message,
+                                icon: 'success',
+                            });
+                            onload();
+                        }
+                        else {
+                            swal({
+                                title: 'Lỗi',
+                                text: res.message,
+                                icon: 'error',
+                            })
+                        }
+                    }
+                })
+            }
+        })
+    }
+</script>

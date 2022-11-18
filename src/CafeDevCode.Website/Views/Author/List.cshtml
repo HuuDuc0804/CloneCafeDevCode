@@ -11,6 +11,14 @@
             <td>@author.Email</td>
             <td>@author.Phone</td>
             <td>@author.ShortName</td>
+            <td>
+                <a class="btn btn-success d-inline" asp-action="Detail" asp-controller="Author" asp-route-id="@author.Id">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </a>
+                <button class="btn btn-danger d-inline ms-2" onclick="onDelete(@author.Id)">
+                    <i class="fa-solid fa-trash-can"></i>
+                </button>
+            </td>
         </tr>
     }
 }

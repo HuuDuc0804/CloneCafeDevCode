@@ -26,6 +26,7 @@ namespace CafeDevCode.Logic.Queries.Implement
         public List<AuthorSummaryModel> GetAll()
         {
             return database.Authors
+                .Where(x => x.IsDeleted != true)
                 .Select(x => mapper.Map<AuthorSummaryModel>(x))
                 .ToList();
         }
@@ -87,7 +88,7 @@ namespace CafeDevCode.Logic.Queries.Implement
                 PageIndex = query.PageIndex ?? 1,
                 PageSize = query.PageSize ?? 20,
                 TotalItem = authorCount,
-                TotalPage = (int)Math.Ceiling((double)authorCount/(query.PageSize ?? 20))
+                TotalPage = (int)Math.Ceiling((double)authorCount / (query.PageSize ?? 20))
             };
 
         }
@@ -106,7 +107,7 @@ namespace CafeDevCode.Logic.Queries.Implement
 
             var authorCount = database.Authors.Count();
 
-            return Task.FromResult( new BasePagingData<AuthorSummaryModel>
+            return Task.FromResult(new BasePagingData<AuthorSummaryModel>
             {
                 Items = authors,
                 PageIndex = query.PageIndex ?? 1,

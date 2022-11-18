@@ -28,7 +28,9 @@ namespace CafeDevCode.Logic.Commands.Handler
                 var author = mapper.Map<Author>(request);
                 author.SetCreateInfo(request.UserName ?? string.Empty, AppGlobal.SysDateTime);
                 database.Authors.Add(author);
+
                 database.SaveChanges();
+
                 result.Success = true;
                 result.Data = author;
             }

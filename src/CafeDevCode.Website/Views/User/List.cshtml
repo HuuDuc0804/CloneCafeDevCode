@@ -1,0 +1,23 @@
+﻿@using CafeDevCode.Logic.Shared.Models
+
+@model IEnumerable<UserSummaryModel>
+@if (Model != null && Model.Any())
+{
+    foreach (var user in Model)
+    {
+        <tr>
+            <td>@user.UserName</td>
+            <td>@user.Email</td>
+            <td>@user.PhoneNumber</td>
+            <td>@user.AuthorId</td>
+            <td>
+                <a class="btn btn-success d-inline" asp-action="Detail" asp-controller="User" asp-route-id="">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </a>
+                <button class="btn btn-danger d-inline ms-2" onclick="onDelete(@user.Id)">
+                    <i class="fa-solid fa-trash-can"></i>
+                </button>
+            </td>
+        </tr>
+    }
+}

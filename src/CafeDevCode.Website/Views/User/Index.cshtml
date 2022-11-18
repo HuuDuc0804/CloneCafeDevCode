@@ -1,1 +1,107 @@
-﻿
+﻿@{
+    ViewData["Title"] = "Admin - Quản lý người dùng - Cafe Dev Code";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Quản lý người dùng</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a asp-action="Index">Người dùng</a></li>
+        <li class="breadcrumb-item active">Danh sách</li>
+    </ol>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <i class="fas fa-table me-1"></i>
+            Danh sách người dùng
+        </div>
+        <div class="card-body">
+            <div class="row">
+                @*<div class="col-md-2">
+                <a class="w-100 btn btn-success" onclick="onLoad()"><i class="fa-solid fa-arrows-rotate"></i> Tải</a>
+                </div>*@
+                <div class="col-md-2">
+                    <a class="w-100 btn btn-success" asp-action="Detail" asp-controller="User" asp-route-id="#"><i class="fa-solid fa-plus"></i> Thêm</a>
+                </div>
+            </div>
+            <hr class="my-2" />
+            <table id="user-list" class="datatable-js">
+                <thead>
+                    <tr>
+                        <th>Tên đăng nhập</th>
+                        <th>Email</th>
+                        <th>Điện thoại</th>
+                        <th>Mã tác giả</th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody id="user-list-body">
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>Tên đăng nhập</th>
+                        <th>Email</th>
+                        <th>Điện thoại</th>
+                        <th>Mã tác giả</th>
+                        <th>Thao tác</th>
+                    </tr>
+                </tfoot>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    $(window).on("load", function () {
+        onLoad();
+    })
+    onLoad = () => {
+        $.ajax({
+            type: 'GET',
+            url: '@Url.Action("List")',
+            success: (res) => {
+                $('#user-list-body').empty();
+                $('#user-list-body').html(res);
+            }
+        })
+    }
+
+    onDelete = (id) => {
+        swal({
+            title: 'Xác nhận',
+            text: 'Bạn có chắc chắn muốn xóa?',
+            icon: 'warning',
+            buttons: true,
+            dangerMode: true,
+        }).then((willDelete) => {
+            if (willDelete) {
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("Delete")',
+                    data: {
+                        id: id,
+                    },
+                    success: (res) => {
+                        if (res.success === true) {
+
+                            swal({
+                                title: 'Thành công!',
+                                text: res.message,
+                                icon: 'success',
+                            });
+                            onload();
+                        }
+                        else {
+                            swal({
+                                title: 'Lỗi',
+                                text: res.message,
+                                icon: 'error',
+                            })
+                        }
+                    }
+                })
+            }
+        })
+    }
+</script>

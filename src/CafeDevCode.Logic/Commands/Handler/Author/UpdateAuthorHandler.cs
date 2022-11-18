@@ -30,6 +30,7 @@ namespace CafeDevCode.Logic.Commands.Handler
                     author.SetUpdateInfo(request.UserName ?? string.Empty, AppGlobal.SysDateTime);
                     database.Authors.Update(author);
                     database.SaveChanges();
+
                     result.Success = true;
                     result.Data = author;
                 }
