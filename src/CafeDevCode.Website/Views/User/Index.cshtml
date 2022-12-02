@@ -67,7 +67,7 @@
         })
     }
 
-    onDelete = (id) => {
+    onDelete = (userName) => {
         swal({
             title: 'Xác nhận',
             text: 'Bạn có chắc chắn muốn xóa?',
@@ -80,7 +80,7 @@
                     type: 'POST',
                     url: '@Url.Action("Delete")',
                     data: {
-                        id: id,
+                        userName: userName,
                     },
                     success: (res) => {
                         if (res.success === true) {

@@ -1,5 +1,7 @@
-﻿@using CafeDevCode.Logic.Shared.Models
-
+﻿@using CafeDevCode.Logic.Queries.Interface
+@using CafeDevCode.Logic.Shared.Models
+@inject IAuthorQueries authorQueries
+@inject IUserQueries userQueries
 @{
     if (string.IsNullOrEmpty(Model.UserName))
     {
@@ -12,3 +14,139 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 @model UserDetailModel
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4">
+        @if (!string.IsNullOrEmpty(Model.UserName))
+        {
+            <span class="card-title">@Model.UserName</span>
+        }
+        else
+        {
+            <span class="card-title">Thông tin người dùng</span>
+        }
+    </h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a asp-action="Index">Người dùng</a></li>
+        <li class="breadcrumb-item active">Chi tiết</li>
+    </ol>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <h3 class="card-title">Thông tin chung</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label">Tài khoản:</label>
+                        @if (!userQueries.IsExistUserName(Model.UserName))
+                        {
+                            <input type="text" class="form-control" asp-for="UserName" placeholder="Tài khoản" />
+                        }
+                        else
+                        {
+                            <label class="form-control" asp-for="UserName">@Model.UserName</label>
+                        }
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label">Email:</label>
+                        <input type="email" class="form-control" asp-for="Email" placeholder="Email" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label">Điện thoại:</label>
+                        <input type="number" class="form-control" asp-for="PhoneNumber" placeholder="Điện thoại" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label">Tác giả:</label>
+                        @*<input type="text" class="form-control" asp-for="AuthorId" placeholder="Tác giả" />*@
+                        <select class="form-control select2" type="text" asp-for="AuthorId" placeholder="Tác giả">
+                            @{
+                                var authors = authorQueries.GetAll();
+                                foreach (var author in authors)
+                                {
+                                    if (author.Id.ToString() == Model.AuthorId)
+                                    {
+                                        <option value="@author.Id" selected>@author.ShortName</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@author.Id">@author.ShortName</option>
+                                    }
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="mb-2">
+                        <label class="form-label">Mật khẩu:</label>
+                        @if (!userQueries.IsExistUserName(Model.UserName))
+                        {
+                            <input type="password" class="form-control" asp-for="Password" placeholder="Mật khẩu" />
+                        }
+                        else
+                        {
+                            <label class="form-control" asp-for="PasswordHash">@Model.PasswordHash</label>
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="row">
+                <div class="col-6 col-md-2">
+                    <button type="button" class="btn btn-primary w-100" onclick="onSaveChange()"><i class="fa-solid fa-floppy-disk"></i> Lưu</button>
+                </div>
+                <div class="col-6 col-md-2">
+                    <a class="btn btn-dark w-100" asp-action="Index"><i class="fa-solid fa-xmark"></i> Thoát</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    onSaveChange = () => {
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("SaveChange")',
+            data: {
+                DetailUserName: $('#UserName').val(),
+                Email: $('#Email').val(),
+                PhoneNumber: $('#PhoneNumber').val(),
+                AuthorId: $('#AuthorId').val(),
+                Password: $('#Password').val(),
+            },
+            success: (res) => {
+                if (res.success === true) {
+                    swal({
+                        title: 'Thành công!',
+                        text: res.message,
+                        icon: 'success',
+                    }).then(() => {
+                        window.location = '@Url.Action("Detail", "User")?userName=' + res.data.userName
+                    })
+                }
+            },
+            error: (error) => {
+                swal({
+                    title: 'Có lỗi!',
+                    text: res.message,
+                    icon: 'error',
+                })
+            }
+        })
+    }
+
+</script>
