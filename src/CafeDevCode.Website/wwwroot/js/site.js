@@ -11,4 +11,8 @@ window.addEventListener('DOMContentLoaded', e => {
             new simpleDatatables.DataTable(dataTable);
         }
     }
+    $('.select2').select2({
+        theme: 'bootstrap-5',
+        allowClear: true,
+    });
 })

@@ -9,6 +9,7 @@ using CafeDevCode.Utils.Extensions;
 using CafeDevCode.Utils.Global;
 using CafeDevCode.Website.Models;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CafeDevCode.Website.Controllers

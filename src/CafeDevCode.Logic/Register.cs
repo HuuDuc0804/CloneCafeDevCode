@@ -15,6 +15,9 @@ namespace CafeDevCode.Logic
         {
             services.AddScoped<IAuthorQueries, AuthorQueries>();
             services.AddScoped<IUserQueries, UserQueries>();
+            services.AddScoped<IPostQueries, PostQueries>();
+            services.AddScoped<ICategoryQueries, CategoryQueries>();
+            services.AddScoped<ITagQueries, TagQueries>();
             return services;
         }
     }

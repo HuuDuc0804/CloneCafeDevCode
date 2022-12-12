@@ -28,6 +28,52 @@ namespace CafeDevCode.Logic.Commands.Handler
                     mapper.Map(request, post);
                     post.SetUpdateInfo(request.UserName ?? string.Empty, AppGlobal.SysDateTime);
                     database.Posts.Update(post);
+
+                    if (request.Tags != null)
+                    {
+                        var oldPostTags = database.PostTags.Where(x => x.PostId == post.Id);
+                        database.RemoveRange(oldPostTags);
+
+                        var postTags = request.Tags.Select(x => new PostTag()
+                        {
+                            PostId = post.Id,
+                            TagId = x.Id,
+                            CreateAt = AppGlobal.SysDateTime,
+                            CreateBy = request.UserName,
+                        });
+                        database.PostTags.AddRange(postTags);
+                        //mapper.Map(postTags, oldPostTags);
+                        //database.PostTags.UpdateRange(oldPostTags);
+                    }
+                    if (request.Categories != null)
+                    {
+                        var oldPostCategories = database.PostCategories.Where(x => x.PostId == post.Id);
+                        database.RemoveRange(oldPostCategories);
+
+                        var postCategories = request.Categories.Select(x => new PostCategory()
+                        {
+                            PostId = post.Id,
+                            CategoryId = x.Id,
+                            CreateAt = AppGlobal.SysDateTime,
+                            CreateBy = request.UserName,
+                        });
+                        database.PostCategories.AddRange(postCategories);
+                    }
+                    if (request.Relates != null)
+                    {
+                        var oldPostRelates = database.PostRelateds.Where(x => x.PostId == post.Id);
+                        database.RemoveRange(oldPostRelates);
+
+                        var postRelates = request.Relates.Select(x => new PostRelated()
+                        {
+                            PostId = post.Id,
+                            RelatedId = x.Id,
+                            CreateAt = AppGlobal.SysDateTime,
+                            CreateBy = request.UserName,
+                        });
+                        database.PostRelateds.AddRange(postRelates);
+                    }
+
                     database.SaveChanges();
                     result.Success = true;
                     result.Data = post;

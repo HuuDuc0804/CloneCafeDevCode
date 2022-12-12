@@ -1,4 +1,5 @@
 ﻿using CafeDevCode.Logic.Shared.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CafeDevCode.Website.Controllers

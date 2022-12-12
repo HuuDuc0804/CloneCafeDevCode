@@ -25,6 +25,7 @@
                         }
                     }
                     <form asp-action="AdminLoginSubmit" method="post">
+                        <input type="hidden" asp-for="ReturnUrl" />
                         <div class="form-floating mb-3">
                             <input class="form-control" asp-for="UserName" placeholder="Tên đăng nhập" />
                             <label for="inputEmail">Tên đăng nhập</label>

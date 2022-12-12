@@ -28,6 +28,43 @@ namespace CafeDevCode.Logic.Commands.Handler
                 post.SetCreateInfo(request.UserName ?? string.Empty, AppGlobal.SysDateTime);
                 database.Posts.Add(post);
                 database.SaveChanges();
+
+                if (request.Tags != null)
+                {
+                    var postTags = request.Tags.Select(x => new PostTag()
+                    {
+                        PostId = post.Id,
+                        TagId = x.Id,
+                        CreateAt = AppGlobal.SysDateTime,
+                        CreateBy = request.UserName,
+                    });
+                    database.PostTags.AddRange(postTags);
+                }
+                if (request.Categories != null)
+                {
+                    var postCategories = request.Categories.Select(x => new PostCategory()
+                    {
+                        PostId = post.Id,
+                        CategoryId = x.Id,
+                        CreateAt = AppGlobal.SysDateTime,
+                        CreateBy = request.UserName,
+                    });
+                    database.PostCategories.AddRange(postCategories);
+                }
+                if (request.Relates != null)
+                {
+                    var postRelates = request.Relates.Select(x => new PostRelated()
+                    {
+                        PostId = post.Id,
+                        RelatedId = x.Id,
+                        CreateAt = AppGlobal.SysDateTime,
+                        CreateBy = request.UserName,
+                    });
+                    database.PostRelateds.AddRange(postRelates);
+                }
+
+                database.SaveChanges();
+
                 result.Success = true;
                 result.Data = post;
             }

@@ -9,22 +9,29 @@ using CafeDevCode.Website.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace CafeDevCode.Website.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class UserController : Controller
     {
         private readonly IMediator mediator;
         private readonly IUserQueries userQueries;
+        private readonly SignInManager<User> signInManager;
 
         public UserController(IMediator mediator,
-              IUserQueries userQueries)
+              IUserQueries userQueries,
+              SignInManager<User> signInManager)
         {
             this.mediator = mediator;
             this.userQueries = userQueries;
+            this.signInManager = signInManager;
         }
+        
         public IActionResult Index()
         {
             return View();
@@ -45,6 +52,7 @@ namespace CafeDevCode.Website.Controllers
             return View(model);
         }
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult AdminLogin(LoginViewModel model)
         {
             return View(model);
@@ -75,6 +83,7 @@ namespace CafeDevCode.Website.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<ActionResult> AdminLoginSubmit(LoginViewModel model)
         {
             if (ModelState.IsValid)
@@ -96,7 +105,8 @@ namespace CafeDevCode.Website.Controllers
                         };
 
                     var claimPrincipal = new ClaimsPrincipal(claimIdentities);
-                    await HttpContext.SignInAsync(claimPrincipal);
+                    //await HttpContext.SignInAsync(claimPrincipal);
+                    await signInManager.SignInAsync(user, model.RememberPassword);
 
                     if (string.IsNullOrEmpty(model.ReturnUrl))
                     {

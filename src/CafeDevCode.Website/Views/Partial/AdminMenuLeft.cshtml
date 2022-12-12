@@ -1,4 +1,6 @@
-﻿<nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+﻿@using System.Security.Claims
+@inject IHttpContextAccessor httpContextAccessor
+<nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
     <div class="sb-sidenav-menu">
         <div class="nav">
             <div class="sb-sidenav-menu-heading">Nội dung</div>
@@ -45,6 +47,6 @@
     </div>
     <div class="sb-sidenav-footer">
         <div class="small">Tài khoản: </div>
-        Administrator
+        @httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.Name)?.Value
     </div>
 </nav>

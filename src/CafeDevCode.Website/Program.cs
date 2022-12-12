@@ -6,8 +6,11 @@ using CafeDevCode.Logic.Commands.Request;
 using CafeDevCode.Logic.MappingProfile;
 using CafeDevCode.Utils.Extensions;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace CafeDevCode.Website
 {
@@ -21,6 +24,8 @@ namespace CafeDevCode.Website
                 .AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null)
                 .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling =
                 Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+            //HttpContext
+            builder.Services.AddHttpContextAccessor();
 
             //Service Collection Extension
             builder.Services.AddCookiesAuthenticate(builder.Configuration);
@@ -31,8 +36,26 @@ namespace CafeDevCode.Website
             // Add AutoMapper & MediatR
             builder.Services.AddMediatR(typeof(Login).Assembly);
             builder.Services.AddAutoMapper(typeof(AuthorMappingProfile).Assembly);
+
             //Add Queries
             builder.Services.AddQueries();
+
+            //Add Authorize
+            builder.Services.ConfigureApplicationCookie(options =>
+            {
+                options.Cookie.HttpOnly = true;
+                options.SlidingExpiration = true;
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
+                options.LoginPath = builder.Configuration.GetSection("AuthenCookies").GetSection("LoginPath").Value;
+                options.AccessDeniedPath = builder.Configuration.GetSection("AuthenCookies").GetSection("LoginPath").Value;
+            });
+
+            builder.Services.AddAuthorization(options =>
+            {
+                options.FallbackPolicy = new AuthorizationPolicyBuilder()
+                    .RequireAuthenticatedUser()
+                    .Build();
+            });
 
             var app = builder.Build();
 
@@ -57,7 +80,7 @@ namespace CafeDevCode.Website
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(

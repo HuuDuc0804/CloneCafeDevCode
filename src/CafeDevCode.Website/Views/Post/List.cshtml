@@ -1,0 +1,24 @@
+﻿@using CafeDevCode.Logic.Shared.Models
+@model IEnumerable<PostSummaryModel>
+@if (Model != null && Model.Any())
+{
+    foreach (var post in Model)
+    {
+        <tr>
+            <td>@post.Id</td>
+            <td>@post.Title</td>
+            <td>@post.Summary</td>
+            <td>@post.Keywords</td>
+            <td>@post.PostDate</td>
+            <td>
+                <a class="btn btn-success d-inline" asp-action="Detail" asp-controller="Post" asp-route-id="@post.Id">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </a>
+                <button class="btn btn-danger d-inline ms-2" onclick="onDelete(@post.Id)">
+                    <i class="fa-solid fa-trash-can"></i>
+                </button>
+            </td>
+        </tr>
+    }
+}
+

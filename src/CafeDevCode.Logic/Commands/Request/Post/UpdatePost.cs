@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CafeDevCode.Logic.Commands.Request
 {
-    public class UpdatePost : Post,
+    public class UpdatePost : PostDetailModel,
         IIdentifiedCommand,
         IRequest<BaseCommandResultWithData<Post>>
     {

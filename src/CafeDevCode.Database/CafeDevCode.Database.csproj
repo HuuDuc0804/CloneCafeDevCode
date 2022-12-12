@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CafeDevCode.Common.Shared\CafeDevCode.Common.Shared.csproj" />
+    <ProjectReference Include="..\CafeDevCode.Database.Shared\CafeDevCode.Database.Shared.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,5 +1,271 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using CafeDevCode.Logic.Queries.Interface
+@using CafeDevCode.Logic.Shared.Models
+@inject IAuthorQueries authorQueries
+@inject IPostQueries postQueries
+@inject ITagQueries tagQueries
+@inject ICategoryQueries categoryQueries
 @{
+    if (Model.Id > 0)
+    {
+        ViewData["Title"] = $"Bài viết - {Model.Title} - Cafe Dev Code";
+    }
+    else
+    {
+        ViewData["Title"] = $"Admin - Quản lý bài viết - Cafe Dev Code";
+    }
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
+@model PostDetailModel
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4">
+        @if (Model.Id > 0)
+        {
+            <span class="card-title">@Model.Title</span>
+        }
+        else
+        {
+            <span class="card-title">Nội dung bài viết</span>
+        }
+    </h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a asp-action="Index">Bài viết</a></li>
+        <li class="breadcrumb-item active">Nội dung</li>
+    </ol>
+    <div class="row m-0 mb-4 w-100">
+        <div class="col-md-8 px-0">
+            <textarea asp-for="Content" class="editor"></textarea>
+            <div class="card mt-2">
+                <div class="card-header">
+                    <h3 class="card-title">Danh mục</h3>
+                </div>
+                <div class="card-body">
+                    <select multiple class="form-select select2" id="multiple-select-categories" data-placeholder="Danh mục">
+                        @{
+                            var categories = categoryQueries.GetAll();
+                            if (categories != null)
+                            {
+                                foreach (var category in categories)
+                                {
+                                    if (Model.Categories.Select(x => x.Id).Contains(category.Id) == true)
+                                    {
+                                                <option selected value="@category.Id">@category.Title</option>
+                                    }
+                                    else
+                                    {
+                                                <option value="@category.Id">@category.Title</option>
+                                    }
+                                }
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="card mt-2">
+                <div class="card-header">
+                    <h3 class="card-title">Thẻ</h3>
+                </div>
+                <div class="card-body">
+                    <select multiple class="form-select select2" id="multiple-select-tags" data-placeholder="Thẻ">
+                        @{
+                            var tags = tagQueries.GetAll();
+                            if (tags != null)
+                            {
+                                foreach (var tag in tags)
+                                {
+                                    if (Model.Tags.Select(x => x.Id).Contains(tag.Id) == true)
+                                    {
+                                                <option selected value="@tag.Id">@tag.Title</option>
+                                    }
+                                    else
+                                    {
+                                                <option value="@tag.Id">@tag.Title</option>
+                                    }
+                                }
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="card mt-2">
+                <div class="card-header">
+                    <h3 class="card-title">Liên quan</h3>
+                </div>
+                <div class="card-body">
+                    <select multiple class="form-select select2" id="multiple-select-relates" data-placeholder="Liên quan">
+                        @{
+                            var posts = postQueries.GetAll();
+                            if (posts != null)
+                            {
+                                foreach (var post in posts)
+                                {
+                                    if (Model.Relates.Select(x => x.Id).Contains(post.Id) == true)
+                                    {
+                                                <option selected value="@post.Id">@post.Title</option>
+                                    }
+                                    else
+                                    {
+                                                <option value="@post.Id">@post.Title</option>
+                                    }
+                                }
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Thông tin chung</h3>
+                </div>
+                <div class="card-body">
+                    <input type="hidden" asp-for="Id" />
+                    <div class="rows w-100 m-0 mt-2">
+                        <label><b>Tiêu đề:</b></label>
+                        <textarea class="form-control" rows="2" asp-for="Title"></textarea>
+                    </div>
+                    <div class="rows w-100 m-0 mt-2">
+                        <label><b>Tóm tắt:</b></label>
+                        <textarea class="form-control" rows="3" asp-for="Summary"></textarea>
+                    </div>
+                    <div class="rows w-100 m-0 mt-2">
+                        <label><b>Mô tả:</b></label>
+                        <textarea class="form-control" rows="3" asp-for="Description"></textarea>
+                    </div>
+                    <div class="rows w-100 m-0 mt-2">
+                        <label><b>Từ khóa:</b></label>
+                        <textarea class="form-control" rows="2" asp-for="Keywords"></textarea>
+                    </div>
+                    <div class="rows w-100 m-0 mt-2">
+                        <label><b>Url Meta:</b></label>
+                        <textarea class="form-control" rows="2" asp-for="UrlMeta"></textarea>
+                    </div>
+                    <div class="rows w-100 m-0 mt-2">
+                        <label><b>Ngày đăng:</b></label>
+                        <input class="form-control"asp-for="PostDate" />
+                    </div>
+                    <div class="rows w-100 m-0 mt-2">
+                        <label><b>Tác giả:</b></label>
+                        <select class="form-select select2" id="multiple-select-related-posts" asp-for="AuthorId">
+                            @{
+                                var authors = authorQueries.GetAll();
+                                if (authors != null)
+                                {
+                                    foreach (var author in authors)
+                                    {
+                                        if (Model.AuthorId == author.Id)
+                                        {
+                                                    <option selected value="@author.Id">@author.FullName</option>
+                                        }
+                                        else
+                                        {
+                                                    <option value="@author.Id">@author.FullName</option>
+                                        }
+                                    }
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="rows w-100 m-0 mt-2">
+                        <label><b>Ảnh bìa:</b></label>
+                        <div class="input-group mb-3">
+                            <input type="text" asp-for="Image" class="form-control" placeholder="Ảnh" />
+                            <span class="input-group-text btn btn-success" id="basic-addon2">Browser</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="row w-100 m-0">
+                        <div class="col-6 col-md-6">
+                            <button type="button" class="btn btn-primary w-100" onclick="onSaveChange()"><i class="fa-solid fa-floppy-disk"></i> Lưu</button>
+                        </div>
+                        <div class="col-6 col-md-6">
+                            <a class="btn btn-dark w-100" asp-action="Index"><i class="fa-solid fa-xmark"></i> Thoát</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    let editorContent;
+    ClassicEditor
+        .create(document.querySelector('.editor'), {
+            // toolbar: [ 'heading', '|', 'bold', 'italic', 'link' ]
+        })
+        .then(editor => {
+            editorContent = editor;
+
+            window.editor = editor;
+            editor.editing.view.change(writer => {
+                writer.setStyle('height', '400px', editor.editing.view.document.getRoot());
+            });
+        })
+        .catch(err => {
+            console.error(err.stack);
+        });
+
+    onSaveChange = () => {
+        var categories = $('#multiple-select-categories').select2('data')
+            .map((item) => {
+                return {
+                    id: item.id,
+                    name: item.text
+                }
+            });
+        var tags = $('#multiple-select-tags').select2('data')
+            .map((item) => {
+                return {
+                    id: item.id,
+                    name: item.text
+                }
+            });
+        var postRelateds = $('#multiple-select-relates').select2('data')
+            .map((item) => {
+                return {
+                    id: item.id,
+                    name: item.text
+                }
+            });
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("SaveChange")',
+            data: {
+                Id: $('#Id').val(),
+                Title: $('#Title').val(),
+                UrlMeta: $('#UrlMeta').val(),
+                Keywords: $('#Keywords').val(),
+                Summary: $('#Summary').val(),
+                Description: $('#Description').val(),
+                AuthorId: $('#AuthorId').val(),
+                Image: $('#Image').val(),
+                PostDate: $('#PostDate').val(),
+                Content: editorContent.getData(),
+                Categories: categories,
+                Tags: tags,
+                Relates: postRelateds
+            },
+            success: (res) => {
+                console.log(res);
+                if (res.success === true) {
+                    swal({
+                        title: 'Thành công!',
+                        text: res.message,
+                        icon: 'success',
+                    });
+                }
+            },
+            error: (error) => {
+                swal({
+                    title: 'Có lỗi!',
+                    text: res.message,
+                    icon: 'error',
+                })
+            }
+        })
+    }
+
+</script>
